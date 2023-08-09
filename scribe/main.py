@@ -1,5 +1,4 @@
 """Tales of Aetherium Bot"""
-import os
 import random
 
 from typing import Any, Coroutine
@@ -9,8 +8,6 @@ import discord
 from discord.ext import commands
 
 discord.utils.setup_logging()
-
-TOKEN = os.getenv("DISCORD_TOKEN_SCRIBE")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -60,6 +57,3 @@ async def scribe_error(ctx: commands.Context, error: Exception):
 
     if isinstance(error, commands.BadArgument):
         await ctx.send("Sorry, I couldn't find all the users listed. Please try again")
-
-
-bot.run(TOKEN)
