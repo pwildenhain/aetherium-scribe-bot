@@ -1,3 +1,2 @@
 discord.py
-databases[aiosqlite]
-sqlalchemy
+orm[sqlite]
