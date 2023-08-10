@@ -2,3 +2,5 @@
 black
 pylint
 pyright
+pytest
+pytest-asyncio

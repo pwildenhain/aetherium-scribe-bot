@@ -14,8 +14,13 @@ colorama==0.4.6
     # via
     #   click
     #   pylint
+    #   pytest
 dill==0.3.7
     # via pylint
+exceptiongroup==1.1.2
+    # via pytest
+iniconfig==2.0.0
+    # via pytest
 isort==5.12.0
     # via pylint
 lazy-object-proxy==1.9.0
@@ -27,21 +32,32 @@ mypy-extensions==1.0.0
 nodeenv==1.8.0
     # via pyright
 packaging==23.1
-    # via black
+    # via
+    #   black
+    #   pytest
 pathspec==0.11.2
     # via black
 platformdirs==3.10.0
     # via
     #   black
     #   pylint
+pluggy==1.2.0
+    # via pytest
 pylint==2.17.5
     # via -r dev-requirements.in
 pyright==1.1.321
+    # via -r dev-requirements.in
+pytest==7.4.0
+    # via
+    #   -r dev-requirements.in
+    #   pytest-asyncio
+pytest-asyncio==0.21.1
     # via -r dev-requirements.in
 tomli==2.0.1
     # via
     #   black
     #   pylint
+    #   pytest
 tomlkit==0.12.1
     # via pylint
 typing-extensions==4.7.1
