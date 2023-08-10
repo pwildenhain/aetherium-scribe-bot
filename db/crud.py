@@ -11,7 +11,7 @@ logger = logging.getLogger("discord")
 
 async def record_game(dm_name: str, players: Iterable[str]) -> list[str]:
     """Record a player in a game"""
-    now = datetime.now()
+    today = datetime.today()
     data = await PlayerGames.objects.all()
     # Consider when we're creating the first game in the database
     try:
@@ -21,7 +21,7 @@ async def record_game(dm_name: str, players: Iterable[str]) -> list[str]:
 
     players_in_game = [
         await PlayerGames.objects.create(
-            game_id=next_game_id, dm_name=dm_name, player_id=player, datetime=now
+            game_id=next_game_id, dm_name=dm_name, player_id=player, date=today
         )
         for player in players
     ]
@@ -29,8 +29,14 @@ async def record_game(dm_name: str, players: Iterable[str]) -> list[str]:
     return [player_game.player_id for player_game in players_in_game]
 
 
-async def count_player_games(player: str) -> int:
-    """Count the number of player games in the current month"""
-    current_month = datetime.now().month
+async def count_player_games(player: str, monthyear: datetime) -> int:
+    """Count the number of player games in the given month"""
     games = await PlayerGames.objects.filter(player_id=player).all()
-    return len([game for game in games if game.datetime.month == current_month])
+    return len(
+        [
+            game
+            for game in games
+            # truncate to monthyear
+            if game.date.replace(day=1) == monthyear
+        ]
+    )
