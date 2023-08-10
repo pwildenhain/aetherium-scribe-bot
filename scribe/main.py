@@ -16,7 +16,9 @@ help_command = commands.DefaultHelpCommand(show_parameter_descriptions=False)
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=help_command)
 
 
-async def check_for_invalid_members(ctx: commands.Context, members: tuple[str]) -> None:
+async def check_for_invalid_members(
+    ctx: commands.Context, members: tuple[str, ...]
+) -> None:
     """Examine list of members passed, raise Exception when bad usernames are found"""
     invalid_members = get_bad_usernames(members)
     if invalid_members:
@@ -26,7 +28,7 @@ async def check_for_invalid_members(ctx: commands.Context, members: tuple[str]) 
         raise commands.BadArgument()
 
 
-@bot.command(name="scribe")
+@bot.command()
 @commands.has_role("Admin")
 async def scribe(ctx: commands.Context, *members: str) -> None:
     """Record which server members were in the adventure
@@ -41,7 +43,7 @@ async def scribe(ctx: commands.Context, *members: str) -> None:
     await ctx.send(f"{ ctx.author } ran a game for { ', '.join(players_in_game) }")
 
 
-@bot.command(name="tally")
+@bot.command()
 @commands.has_role("Admin")
 async def tally(ctx: commands.Context, member: str) -> None:
     """Tally how many games a member has played so far this month

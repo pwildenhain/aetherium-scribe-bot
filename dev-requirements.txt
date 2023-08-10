@@ -24,6 +24,8 @@ mccabe==0.7.0
     # via pylint
 mypy-extensions==1.0.0
     # via black
+nodeenv==1.8.0
+    # via pyright
 packaging==23.1
     # via black
 pathspec==0.11.2
@@ -33,6 +35,8 @@ platformdirs==3.10.0
     #   black
     #   pylint
 pylint==2.17.5
+    # via -r dev-requirements.in
+pyright==1.1.321
     # via -r dev-requirements.in
 tomli==2.0.1
     # via
@@ -47,3 +51,6 @@ typing-extensions==4.7.1
     #   pylint
 wrapt==1.15.0
     # via astroid
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
