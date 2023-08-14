@@ -1,4 +1,5 @@
 """Tales of Aetherium Bot"""
+from datetime import datetime
 import logging
 
 import discord
@@ -12,6 +13,7 @@ logger = logging.getLogger("discord")
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 help_command = commands.DefaultHelpCommand(show_parameter_descriptions=False)
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=help_command)
 
@@ -53,8 +55,8 @@ async def tally(ctx: commands.Context, member: str) -> None:
     """
 
     await check_for_invalid_members(ctx, (member,))
-
-    num_games = await count_player_games(member)
+    current_monthyear = datetime.today().date().replace(day=1)
+    num_games = await count_player_games(member, current_monthyear)
     plural = "s" if num_games != 1 else ""
     await ctx.send(f"{ member } has played in { num_games } game{ plural } this month")
 

@@ -7,7 +7,6 @@ import orm
 import databases
 
 SQLALCHEMY_DATABASE_URL = os.getenv("DB_URL", "sqlite+aiosqlite:///./db/test.db")
-
 database = databases.Database(SQLALCHEMY_DATABASE_URL)
 models = orm.ModelRegistry(database=database)
 
@@ -26,7 +25,7 @@ class PlayerGames(orm.Model):
         # usernames on Discord can only be 32 characters long
         "dm_name": orm.String(max_length=32),
         "player_id": orm.String(max_length=25),
-        "datetime": orm.DateTime(),
+        "date": orm.Date(),
     }
 
 
