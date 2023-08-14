@@ -25,12 +25,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt -r dev-requirements.txt
-    - name: Black
+    - name: Test
       run: |
-        black .
-    - name: Pyright
-      run: |
-        pyright .
-    - name: Pylint
-      run: |
-        pylint . --recursive y
+       pytest

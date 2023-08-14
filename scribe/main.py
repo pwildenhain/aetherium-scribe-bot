@@ -13,6 +13,7 @@ logger = logging.getLogger("discord")
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 help_command = commands.DefaultHelpCommand(show_parameter_descriptions=False)
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=help_command)
 

@@ -4,10 +4,32 @@
 #
 #    pip-compile dev-requirements.in
 #
+aiohttp==3.8.5
+    # via
+    #   -c requirements.txt
+    #   discord-py
+aiosignal==1.3.1
+    # via
+    #   -c requirements.txt
+    #   aiohttp
+annotated-types==0.5.0
+    # via pydantic
 astroid==2.15.6
     # via pylint
+async-timeout==4.0.2
+    # via
+    #   -c requirements.txt
+    #   aiohttp
+attrs==23.1.0
+    # via
+    #   -c requirements.txt
+    #   aiohttp
 black==23.7.0
-    # via -r dev-requirements.in
+    # via pytest-black
+charset-normalizer==3.2.0
+    # via
+    #   -c requirements.txt
+    #   aiohttp
 click==8.1.6
     # via black
 colorama==0.4.6
@@ -15,10 +37,29 @@ colorama==0.4.6
     #   click
     #   pylint
     #   pytest
+coverage[toml]==7.3.0
+    # via pytest-cov
 dill==0.3.7
     # via pylint
+discord-py==2.3.1
+    # via
+    #   -c requirements.txt
+    #   dpytest
+dpytest==0.7.0
+    # via -r dev-requirements.in
 exceptiongroup==1.1.2
     # via pytest
+freezegun==1.2.2
+    # via -r dev-requirements.in
+frozenlist==1.4.0
+    # via
+    #   -c requirements.txt
+    #   aiohttp
+    #   aiosignal
+idna==3.4
+    # via
+    #   -c requirements.txt
+    #   yarl
 iniconfig==2.0.0
     # via pytest
 isort==5.12.0
@@ -27,6 +68,11 @@ lazy-object-proxy==1.9.0
     # via astroid
 mccabe==0.7.0
     # via pylint
+multidict==6.0.4
+    # via
+    #   -c requirements.txt
+    #   aiohttp
+    #   yarl
 mypy-extensions==1.0.0
     # via black
 nodeenv==1.8.0
@@ -43,19 +89,50 @@ platformdirs==3.10.0
     #   pylint
 pluggy==1.2.0
     # via pytest
+pydantic==2.1.1
+    # via pytest-pyright
+pydantic-core==2.4.0
+    # via pydantic
 pylint==2.17.5
-    # via -r dev-requirements.in
+    # via pytest-pylint
 pyright==1.1.321
-    # via -r dev-requirements.in
+    # via pytest-pyright
 pytest==7.4.0
     # via
     #   -r dev-requirements.in
+    #   dpytest
     #   pytest-asyncio
+    #   pytest-black
+    #   pytest-cov
+    #   pytest-env
+    #   pytest-pylint
+    #   pytest-pyright
 pytest-asyncio==0.21.1
+    # via
+    #   -r dev-requirements.in
+    #   dpytest
+pytest-black==0.3.12
     # via -r dev-requirements.in
+pytest-cov==4.1.0
+    # via -r dev-requirements.in
+pytest-env==0.8.2
+    # via -r dev-requirements.in
+pytest-pylint==0.19.0
+    # via -r dev-requirements.in
+pytest-pyright==0.0.3
+    # via -r dev-requirements.in
+python-dateutil==2.8.2
+    # via freezegun
+six==1.16.0
+    # via python-dateutil
+toml==0.10.2
+    # via
+    #   pytest-black
+    #   pytest-pylint
 tomli==2.0.1
     # via
     #   black
+    #   coverage
     #   pylint
     #   pytest
 tomlkit==0.12.1
@@ -64,9 +141,15 @@ typing-extensions==4.7.1
     # via
     #   astroid
     #   black
+    #   pydantic
+    #   pydantic-core
     #   pylint
 wrapt==1.15.0
     # via astroid
+yarl==1.9.2
+    # via
+    #   -c requirements.txt
+    #   aiohttp
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

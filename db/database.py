@@ -7,7 +7,6 @@ import orm
 import databases
 
 SQLALCHEMY_DATABASE_URL = os.getenv("DB_URL", "sqlite+aiosqlite:///./db/test.db")
-
 database = databases.Database(SQLALCHEMY_DATABASE_URL)
 models = orm.ModelRegistry(database=database)
 

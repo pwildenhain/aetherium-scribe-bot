@@ -1,6 +1,10 @@
 -c requirements.txt
-black
-pylint
-pyright
+dpytest
+freezegun
 pytest
 pytest-asyncio
+pytest-black
+pytest-cov
+pytest-env
+pytest-pylint
+pytest-pyright

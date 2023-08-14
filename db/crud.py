@@ -2,9 +2,12 @@
 import logging
 
 from datetime import datetime
-from typing import Iterable, cast
+from typing import TYPE_CHECKING, Iterable, cast
 
 from db.database import PlayerGames
+
+if TYPE_CHECKING:  # pragma: no cover
+    from datetime import _Date
 
 logger = logging.getLogger("discord")
 
@@ -29,7 +32,7 @@ async def record_game(dm_name: str, players: Iterable[str]) -> list[str]:
     return [player_game.player_id for player_game in players_in_game]
 
 
-async def count_player_games(player: str, monthyear: datetime) -> int:
+async def count_player_games(player: str, monthyear: "_Date") -> int:
     """Count the number of player games in the given month"""
     games = await PlayerGames.objects.filter(player_id=player).all()
     return len(

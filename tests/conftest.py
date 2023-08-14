@@ -1,17 +1,27 @@
+"""Testing setup for the bot"""
+# pylint has a hard time understanding fixtures
+# pylint: disable=missing-function-docstring,redefined-outer-name
 import csv
 import os
 import sqlite3
 
+import discord.ext.test as dpytest
 import pytest
+import pytest_asyncio
+
+from scribe.main import bot
 
 TEST_DATA_PATH = "tests/data/"
-TEST_DB_PATH = TEST_DATA_PATH + "test.db"
-
-os.environ["DB_URL"] = TEST_DB_PATH
 
 
-def create_database() -> None:
-    conn = sqlite3.connect(TEST_DB_PATH)
+@pytest.fixture()
+def test_db_path():
+    return TEST_DATA_PATH + "test.db"
+
+
+def create_database(test_db_path) -> None:
+    """Create the testing database"""
+    conn = sqlite3.connect(test_db_path)
     cursor = conn.cursor()
 
     cursor.execute(
@@ -25,8 +35,10 @@ def create_database() -> None:
         )"""
     )
 
-    with open(TEST_DATA_PATH + "player_games.csv") as csv_file:
+    with open(TEST_DATA_PATH + "player_games.csv", encoding="utf-8") as csv_file:
         reader = csv.reader(csv_file)
+        # skip column names
+        next(reader)
 
         for row in reader:
             cursor.execute(
@@ -41,10 +53,33 @@ def create_database() -> None:
 
 
 @pytest.fixture()
-def refresh_db():
+def refresh_db(test_db_path):
     try:
-        os.remove(TEST_DB_PATH)
+        os.remove(test_db_path)
     except FileNotFoundError:
         pass
 
-    create_database()
+    create_database(test_db_path)
+
+
+@pytest_asyncio.fixture()
+async def mock_bot():
+    # Setup
+    # The docs tell us to do it this way...
+    # pylint: disable=protected-access
+    await bot._async_setup_hook()
+    # pylint: enable=protected-access
+
+    dpytest.configure(bot, members=["tester", "non-admin-tester"])
+
+    config = dpytest.get_config()
+    tester = config.members[0]
+    guild = config.guilds[0]
+    admin_role = await guild.create_role(name="Admin")
+
+    await dpytest.add_role(tester, admin_role)
+
+    yield bot
+
+    # Teardown
+    await dpytest.empty_queue()  # empty the global message queue as test teardown
