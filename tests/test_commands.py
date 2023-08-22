@@ -79,6 +79,24 @@ async def test_tally_one(refresh_db, mock_bot):
     )
 
 
+@freeze_time(AS_OF_DATE)
+@pytest.mark.asyncio
+async def test_tally_multiple_users(refresh_db, mock_bot):
+    await dpytest.message("!tally <@1234> <@1235> <@1239>")
+    assert (
+        dpytest.verify()
+        .message()
+        .contains()
+        .content(
+            (
+                "<@1234> has played in 3 games this month\n"
+                "<@1235> has played in 1 game this month\n"
+                "<@1239> has played in 0 games this month"
+            )
+        )
+    )
+
+
 @pytest.mark.asyncio
 async def test_tally_invalid_username(refresh_db, mock_bot):
     with pytest.raises(BadArgument):

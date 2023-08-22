@@ -37,7 +37,7 @@ async def scribe(ctx: commands.Context, *members: str) -> None:
 
     Arguments:
         members:
-            A list of usernames of the server members who participated
+            Usernames of the server members who participated
             in the adventure
     """
     await check_for_invalid_members(ctx, members)
@@ -47,18 +47,24 @@ async def scribe(ctx: commands.Context, *members: str) -> None:
 
 @bot.command()
 @commands.has_role("Admin")
-async def tally(ctx: commands.Context, member: str) -> None:
+async def tally(ctx: commands.Context, *members: str) -> None:
     """Tally how many games a member has played so far this month
 
     Arguments:
-        member: The username of the member
+        members: Usernames of server members
     """
 
-    await check_for_invalid_members(ctx, (member,))
+    await check_for_invalid_members(ctx, members)
     current_monthyear = datetime.today().date().replace(day=1)
-    num_games = await count_player_games(member, current_monthyear)
-    plural = "s" if num_games != 1 else ""
-    await ctx.send(f"{ member } has played in { num_games } game{ plural } this month")
+    game_counts = []
+    for member in members:
+        num_games = await count_player_games(member, current_monthyear)
+        plural = "s" if num_games != 1 else ""
+        game_counts += [
+            f"{ member } has played in { num_games } game{ plural } this month"
+        ]
+
+    await ctx.send("\n".join(game_counts))
 
 
 @scribe.error
