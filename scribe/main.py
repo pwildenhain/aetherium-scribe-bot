@@ -30,6 +30,17 @@ async def check_for_invalid_members(
         raise commands.BadArgument()
 
 
+async def process_members(ctx: commands.Context, members: tuple[str, ...]) -> list[str]:
+    """Apply cleaning processes to input
+
+    * Check for invalid user names
+    * De-duplicate usernames
+    """
+    await check_for_invalid_members(ctx, members)
+    # using this instead of set() to preserve order of inputs
+    return list(dict.fromkeys(members))
+
+
 @bot.command()
 @commands.has_role("Admin")
 async def scribe(ctx: commands.Context, *members: str) -> None:
@@ -40,8 +51,8 @@ async def scribe(ctx: commands.Context, *members: str) -> None:
             Usernames of the server members who participated
             in the adventure
     """
-    await check_for_invalid_members(ctx, members)
-    players_in_game = await record_game(dm_name=str(ctx.author), players=members)
+    players = await process_members(ctx, members)
+    players_in_game = await record_game(dm_name=str(ctx.author), players=players)
     await ctx.send(f"{ ctx.author } ran a game for { ', '.join(players_in_game) }")
 
 
@@ -54,14 +65,14 @@ async def tally(ctx: commands.Context, *members: str) -> None:
         members: Usernames of server members
     """
 
-    await check_for_invalid_members(ctx, members)
+    players = await process_members(ctx, members)
     current_monthyear = datetime.today().date().replace(day=1)
     game_counts = []
-    for member in members:
-        num_games = await count_player_games(member, current_monthyear)
+    for player in players:
+        num_games = await count_player_games(player, current_monthyear)
         plural = "s" if num_games != 1 else ""
         game_counts += [
-            f"{ member } has played in { num_games } game{ plural } this month"
+            f"{ player } has played in { num_games } game{ plural } this month"
         ]
 
     await ctx.send("\n".join(game_counts))

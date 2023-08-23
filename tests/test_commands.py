@@ -20,8 +20,20 @@ async def test_scribe(refresh_db, mock_bot):
         dpytest.verify()
         .message()
         .contains()
-        # This users comes from conftest.py
+        # This fake DM user comes from conftest.py
         .content("tester#0001 ran a game for <@1230>, <@1231>, <@1232>")
+    )
+
+
+@freeze_time(AS_OF_DATE)
+@pytest.mark.asyncio
+async def test_scribe_duplicate_players(refresh_db, mock_bot):
+    await dpytest.message("!scribe <@1230> <@1230> <@1231>")
+    assert (
+        dpytest.verify()
+        .message()
+        .contains()
+        .content("tester#0001 ran a game for <@1230>, <@1231>")
     )
 
 
@@ -94,6 +106,18 @@ async def test_tally_multiple_users(refresh_db, mock_bot):
                 "<@1239> has played in 0 games this month"
             )
         )
+    )
+
+
+@freeze_time(AS_OF_DATE)
+@pytest.mark.asyncio
+async def test_tally_duplicate_users(refresh_db, mock_bot):
+    await dpytest.message("!tally <@1234> <@1234>")
+    assert (
+        dpytest.verify()
+        .message()
+        .contains()
+        .content("<@1234> has played in 3 games this month")
     )
 
 
